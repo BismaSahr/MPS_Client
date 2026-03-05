@@ -1,82 +1,141 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { getProducts } from '../services/products';
 import theme from '../theme';
 
-const HomePage = () => {
-    return (
-        <div className="landing-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
-            {/* Hero Section */}
-            <section className="hero-section" style={{ padding: '8rem 0', textAlign: 'center' }}>
+const HomePage = () => {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        getProducts()
+            .then(setProducts)
+            .catch(() => setError('Could not load products. Make sure the backend is running.'))
+            .finally(() => setLoading(false));
+    }, []);
+
+    return (
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 2rem' }}>
+            {/* Hero */}
+            <section style={{ textAlign: 'center', padding: '4rem 0 5rem' }}>
                 <motion.h1
-                    className="hero-title"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    style={{ fontSize: '4.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-2px' }}
+                    transition={{ duration: 0.7 }}
+                    style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.2rem', letterSpacing: '-2px' }}
                 >
                     Pioneering the Future of <span className="text-gradient">Research</span>
                 </motion.h1>
                 <motion.p
-                    className="hero-subtitle"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                    style={{ fontSize: '1.25rem', color: theme.colors.text.secondary, maxWidth: '600px', margin: '0 auto 3rem' }}
+                    transition={{ duration: 0.7, delay: 0.2 }}
+                    style={{ color: theme.colors.text.secondary, fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto 2.5rem' }}
                 >
-                    Advancing boundaries through scientific excellence and innovative developer experience at Miami Pro Science.
+                    Pharmaceutical-grade purity. Transparent results. Pioneer in Research.
                 </motion.p>
-
-                <motion.div
-                    className="hero-cta"
+                <motion.button
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.6 }}
-                    style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}
+                    transition={{ delay: 0.4 }}
+                    onClick={() => navigate('/verify')}
+                    style={{ background: theme.colors.primary, color: '#fff', padding: '1rem 2.5rem', borderRadius: '50px', border: 'none', fontFamily: theme.fonts.main, fontWeight: 700, fontSize: '1rem', cursor: 'pointer', boxShadow: `0 8px 30px rgba(255,27,33,0.3)` }}
                 >
-                    <button className="btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>Explore Research</button>
-                    <button className="btn-secondary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>Our Mission</button>
-                </motion.div>
+                    🔍 Scan & Verify Product
+                </motion.button>
             </section>
 
-            {/* Product Categories / Features */}
-            <section style={{ padding: '4rem 0' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '3rem', fontSize: '2.5rem' }}>Core Specializations</h2>
-                <div className="features-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-                    {[
-                        { icon: '🔬', title: 'Molecular Research', desc: 'Cutting-edge analysis of metabolic and performance-enhancing compounds.' },
-                        { icon: '🧬', title: 'Genetic Innovation', desc: 'Developing the next generation of bioavailability-enhanced supplements.' },
-                        { icon: '📊', title: 'Batch Verification', desc: 'Industry-leading purity standards with full transparent reporting.' }
-                    ].map((feature, idx) => (
-                        <motion.div
-                            key={idx}
-                            className="glass-card"
-                            whileHover={{ y: -10, borderColor: theme.colors.primary }}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1 }}
-                            style={{ padding: '3rem 2rem', textAlign: 'left' }}
-                        >
-                            <div style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>{feature.icon}</div>
-                            <h3 style={{ marginBottom: '1rem' }}>{feature.title}</h3>
-                            <p style={{ color: theme.colors.text.secondary }}>{feature.desc}</p>
-                        </motion.div>
-                    ))}
+            {/* Products */}
+            <section>
+                <h2 style={{ fontSize: '2rem', marginBottom: '2.5rem', fontWeight: 700 }}>Our Research Products</h2>
+
+                {loading && (
+                    <div style={{ textAlign: 'center', padding: '4rem', color: theme.colors.text.secondary }}>
+                        <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⏳</div>
+                        Loading products...
+                    </div>
+                )}
+
+                {error && (
+                    <div style={{ textAlign: 'center', padding: '3rem', color: theme.colors.primary, background: 'rgba(255,27,33,0.08)', borderRadius: '16px' }}>
+                        <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⚠️</div>
+                        {error}
+                    </div>
+                )}
+
+                {!loading && !error && products.length === 0 && (
+                    <div style={{ textAlign: 'center', padding: '4rem', color: theme.colors.text.secondary }}>No products found.</div>
+                )}
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
+                    {products.map((product, i) => {
+                        const imgSrc = product.images?.[0]
+                            ? `${BACKEND_BASE}${product.images[0]}`
+                            : null;
+
+                        return (
+                            <motion.div
+                                key={product._id}
+                                className="glass-card"
+                                style={{ padding: '0', overflow: 'hidden', cursor: 'pointer' }}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                whileHover={{ y: -6, boxShadow: `0 24px 60px rgba(255,27,33,0.12)` }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.06 }}
+                                onClick={() => navigate(`/products/${product._id}`)}
+                            >
+                                {/* Image */}
+                                <div style={{ height: '220px', background: theme.colors.background.surface, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderBottom: `1px solid ${theme.colors.border}` }}>
+                                    {imgSrc ? (
+                                        <img src={imgSrc} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    ) : (
+                                        <span style={{ fontSize: '4rem' }}>🧬</span>
+                                    )}
+                                </div>
+
+                                {/* Info */}
+                                <div style={{ padding: '1.5rem' }}>
+                                    <h3 style={{ marginBottom: '0.5rem', fontSize: '1.2rem' }}>{product.name}</h3>
+                                    {product.packaging && (
+                                        <p style={{ color: theme.colors.text.secondary, fontSize: '0.85rem', marginBottom: '0.5rem' }}>📦 {product.packaging}</p>
+                                    )}
+                                    {product.storage && (
+                                        <p style={{ color: theme.colors.text.secondary, fontSize: '0.85rem', marginBottom: '1.5rem' }}>🌡️ {product.storage}</p>
+                                    )}
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); navigate(`/products/${product._id}`); }}
+                                        style={{ width: '100%', background: theme.colors.secondary, color: '#fff', padding: '0.75rem', borderRadius: '10px', border: 'none', fontFamily: theme.fonts.main, fontWeight: 600, cursor: 'pointer', transition: theme.transitions.standard }}
+                                    >
+                                        View Details →
+                                    </button>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </section>
 
-            {/* QR Verification Callout */}
-            <section style={{ padding: '6rem 0' }}>
+            {/* QR Callout */}
+            <section style={{ marginTop: '6rem' }}>
                 <div className="glass-card" style={{ padding: '4rem', textAlign: 'center', background: `linear-gradient(135deg, ${theme.colors.background.surface}, #1a1a2e)` }}>
                     <h2 style={{ marginBottom: '1rem' }}>Authenticity is Our Priority</h2>
-                    <p style={{ color: theme.colors.text.secondary, maxWidth: '700px', margin: '0 auto 2rem' }}>
-                        Every Miami Pro Science product comes with a unique QR code. Verify your purchase to access full Lab COAs and purity reports instantly.
+                    <p style={{ color: theme.colors.text.secondary, maxWidth: '640px', margin: '0 auto 2rem', lineHeight: 1.7 }}>
+                        Every Miami Pro Science product comes with a unique QR code. Scan it to instantly verify authenticity and access full lab COA reports.
                     </p>
-                    <button className="btn-primary" style={{ background: theme.colors.secondary }}>Scan Now</button>
+                    <button
+                        onClick={() => navigate('/verify')}
+                        style={{ background: theme.colors.primary, color: '#fff', padding: '1rem 2.5rem', borderRadius: '50px', border: 'none', fontFamily: theme.fonts.main, fontWeight: 700, fontSize: '1rem', cursor: 'pointer' }}
+                    >
+                        Scan Now
+                    </button>
                 </div>
             </section>
-
         </div>
     );
 };

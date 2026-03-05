@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import HomePage from './pages/Home';
 import AboutPage from './pages/About';
 import ProductsPage from './pages/Products';
+import ProductDetailPage from './pages/ProductDetail';
 import VerifyPage from './pages/Verify';
 import COAPage from './pages/COA';
 import ContactPage from './pages/Contact';
@@ -18,6 +19,7 @@ function AnimatedRoutes() {
         <Route path="/" element={<Layout><HomePage /></Layout>} />
         <Route path="/about" element={<Layout><AboutPage /></Layout>} />
         <Route path="/products" element={<Layout><ProductsPage /></Layout>} />
+        <Route path="/products/:id" element={<Layout><ProductDetailPage /></Layout>} />
         <Route path="/verify" element={<Layout><VerifyPage /></Layout>} />
         <Route path="/coa" element={<Layout><COAPage /></Layout>} />
         <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
