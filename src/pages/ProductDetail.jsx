@@ -115,19 +115,7 @@ const ProductDetailPage = () => {
                         </p>
                     </div>
 
-                    <motion.button
-                        whileHover={{ scale: 1.03, boxShadow: `0 10px 40px rgba(255,27,33,0.35)` }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => navigate('/verify')}
-                        style={{
-                            width: '100%', background: theme.colors.primary, color: '#fff',
-                            padding: '1.1rem', borderRadius: '14px', border: 'none',
-                            fontFamily: theme.fonts.main, fontWeight: 700, fontSize: '1.1rem',
-                            cursor: 'pointer', transition: theme.transitions.standard
-                        }}
-                    >
-                        📷 Scan & Verify This Product
-                    </motion.button>
+
                 </motion.div>
             </div>
         </div>

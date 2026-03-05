@@ -410,8 +410,10 @@ const VerifyPage = () => {
                             {[
                                 { label: 'Status', value: finalData?.status === 'Verified' ? '✅ Genuine' : '⚠️ ' + (finalData?.status || '—') },
                                 { label: 'Scan #', value: finalData?.scanCount ?? '—' },
-                                { label: 'COA', value: finalCoaUrl ? '✓ Available' : 'N/A' },
+                                { label: 'Purity', value: finalData?.purity || '—' },
+                                { label: 'Lab', value: finalData?.labName || '—' },
                                 { label: 'Product', value: finalData?.product?.name || '—' },
+                                { label: 'COA', value: finalCoaUrl ? '✓ Available' : 'N/A' },
                             ].map(item => (
                                 <div key={item.label} className="glass-card" style={{ padding: '1rem' }}>
                                     <p style={{ color: theme.colors.text.secondary, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.35rem' }}>{item.label}</p>

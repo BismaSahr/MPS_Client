@@ -64,7 +64,7 @@ const COAPage = () => {
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
+                        {/* <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
                             <div className="glass-card" style={{ padding: '1rem', textAlign: 'center' }}>
                                 <p style={{ color: theme.colors.text.secondary, fontSize: '0.75rem', marginBottom: '0.25rem' }}>PURITY</p>
                                 <p style={{ color: '#22c55e', fontWeight: 800, fontSize: '1.4rem' }}>{coa.purity || '—'}</p>
@@ -73,7 +73,7 @@ const COAPage = () => {
                                 <p style={{ color: theme.colors.text.secondary, fontSize: '0.75rem', marginBottom: '0.25rem' }}>LAB</p>
                                 <p style={{ fontWeight: 600, fontSize: '0.9rem' }}>{coa.labName || '—'}</p>
                             </div>
-                        </div>
+                        </div> */}
 
                         {coa.fileUrl && (
                             <div style={{ marginBottom: '1.5rem', borderRadius: '10px', overflow: 'hidden', border: `1px solid ${theme.colors.border}`, height: '180px' }}>
