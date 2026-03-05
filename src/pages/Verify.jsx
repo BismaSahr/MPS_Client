@@ -330,20 +330,20 @@ const VerifyPage = () => {
 
                         {/* Next Buttons */}
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                            {result.status === 'Verified' && (
-                                <motion.button
-                                    whileHover={{ scale: 1.03 }}
-                                    whileTap={{ scale: 0.97 }}
-                                    onClick={() => setMode('form')}
-                                    style={{
-                                        background: theme.colors.secondary, color: '#fff', padding: '0.8rem 2.5rem',
-                                        borderRadius: '50px', border: 'none', fontFamily: theme.fonts.main,
-                                        fontWeight: 700, cursor: 'pointer', fontSize: '1rem'
-                                    }}
-                                >
-                                    View Full Results →
-                                </motion.button>
-                            )}
+
+                            <motion.button
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                                onClick={() => setMode('form')}
+                                style={{
+                                    background: theme.colors.secondary, color: '#fff', padding: '0.8rem 2.5rem',
+                                    borderRadius: '50px', border: 'none', fontFamily: theme.fonts.main,
+                                    fontWeight: 700, cursor: 'pointer', fontSize: '1rem'
+                                }}
+                            >
+                                View Full Results →
+                            </motion.button>
+
                             <motion.button
                                 whileHover={{ scale: 1.03 }}
                                 whileTap={{ scale: 0.97 }}
