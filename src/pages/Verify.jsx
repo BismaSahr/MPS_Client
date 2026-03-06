@@ -22,16 +22,12 @@ const VerifyPage = () => {
     const [result2, setResult2] = useState(null);
     const [error, setError] = useState(null);
     const [form, setForm] = useState({ name: '', email: '', phoneNumber: '', city: '' });
+    const [formErrors, setFormErrors] = useState({});
     const scannerRef = useRef(null);
 
     const startScanner = async () => {
         setError(null);
         setMode('scanning');
-    };
-
-    const startScanner2 = async () => {
-        setError(null);
-        setMode('scan2');
     };
 
     const stopScanner = async () => {
@@ -105,27 +101,32 @@ const VerifyPage = () => {
 
     const validateForm = () => {
         const { name, email, phoneNumber, city } = form;
-        if (!name.trim()) return 'Full name is required.';
-        if (!email.trim()) return 'Email is required.';
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Invalid email format.';
-        if (!phoneNumber.trim()) return 'Phone number is required.';
-        if (!city.trim()) return 'City is required.';
-        return null;
+        const newErrors = {};
+        if (!name.trim()) newErrors.name = 'Full name is required.';
+        if (!email.trim()) newErrors.email = 'Email is required.';
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = 'Invalid email format.';
+        if (!phoneNumber.trim()) newErrors.phoneNumber = 'Phone number is required.';
+        if (!city.trim()) newErrors.city = 'City is required.';
+        return newErrors;
     };
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        const err = validateForm();
-        if (err) return toast.error(err);
+        const errs = validateForm();
+        if (Object.keys(errs).length > 0) {
+            setFormErrors(errs);
+            toast.error("Please fill all required fields.");
+            return;
+        }
 
         const loadToast = toast.loading("Saving details...");
         try {
             await createCustomer(form);
             toast.success("Saved! Scan again for full data.", { id: loadToast });
+            setFormErrors({});
             setMode('scan2');
         } catch (_) {
             toast.error("Error saving data.", { id: loadToast });
-            setMode('scan2');
         }
     };
 
@@ -134,6 +135,7 @@ const VerifyPage = () => {
         setResult2(null);
         setError(null);
         setForm({ name: '', email: '', phoneNumber: '', city: '' });
+        setFormErrors({});
         setMode('idle');
     };
 
@@ -143,6 +145,10 @@ const VerifyPage = () => {
         border: `1px solid ${theme.colors.border}`, fontFamily: theme.fonts.main,
         fontSize: '0.95rem', outline: 'none', marginTop: '0.35rem',
         boxSizing: 'border-box', transition: theme.transitions.standard,
+    };
+
+    const errorTextStyle = {
+        color: theme.colors.primary, fontSize: '0.75rem', marginTop: '0.25rem', display: 'block'
     };
 
     const isScanning = mode === 'scanning' || mode === 'scan2';
@@ -189,10 +195,20 @@ const VerifyPage = () => {
 
             <AnimatePresence>
                 {mode === 'result' && result && (
-                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass-card" style={{ padding: '3.5rem 2rem', border: `1px solid ${resStatus.color}` }}>
+                    <motion.div key="result" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass-card" style={{ padding: '3.5rem 2rem', border: `1px solid ${resStatus.color}` }}>
                         <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>{resStatus.icon}</div>
                         <h2 style={{ color: resStatus.color, marginBottom: '0.75rem' }}>{resStatus.title}</h2>
-                        <p style={{ color: theme.colors.text.secondary, marginBottom: '2rem' }}>{resStatus.message}</p>
+                        <p style={{ color: theme.colors.text.secondary, marginBottom: '1.5rem' }}>{resStatus.message}</p>
+
+                        {/* Restore COA Preview */}
+                        {coaFileUrl && (
+                            <div style={{ marginBottom: '2rem', borderRadius: '12px', overflow: 'hidden', border: `1px solid ${theme.colors.border}`, maxHeight: '300px' }}>
+                                {coaFileUrl.toLowerCase().endsWith('.pdf')
+                                    ? <iframe src={coaFileUrl} style={{ width: '100%', height: '300px', border: 'none' }} title="COA preview" />
+                                    : <img src={coaFileUrl} alt="COA" style={{ width: '100%', maxHeight: '300px', objectFit: 'contain' }} />}
+                            </div>
+                        )}
+
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
                             <button onClick={() => setMode('form')} style={{ background: theme.colors.secondary, color: '#fff', padding: '0.8rem 2rem', borderRadius: '50px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>View Full Results</button>
                             <button onClick={reset} style={{ background: 'transparent', color: theme.colors.text.primary, border: `1px solid ${theme.colors.border}`, padding: '0.8rem 2rem', borderRadius: '50px', cursor: 'pointer' }}>Cancel</button>
@@ -201,22 +217,28 @@ const VerifyPage = () => {
                 )}
 
                 {mode === 'form' && (
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                        <form className="glass-card" style={{ padding: '3rem 2rem', textAlign: 'left' }} onSubmit={handleFormSubmit}>
+                    <motion.div key="form" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                        <form className="glass-card" style={{ padding: '3rem 2rem', textAlign: 'left' }} onSubmit={handleFormSubmit} noValidate>
                             <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Unlock Full Results</h2>
                             {['name', 'email', 'phoneNumber', 'city'].map(k => (
                                 <div key={k} style={{ marginBottom: '1rem' }}>
                                     <label style={{ textTransform: 'capitalize', color: theme.colors.text.secondary, fontSize: '0.8rem' }}>{k.replace('Number', ' Number')}</label>
-                                    <input value={form[k]} onChange={e => setForm({ ...form, [k]: e.target.value })} style={inputStyle} />
+                                    <input
+                                        value={form[k]}
+                                        onChangeCapture={() => { if (formErrors[k]) setFormErrors({ ...formErrors, [k]: null }) }}
+                                        onChange={e => setForm({ ...form, [k]: e.target.value })}
+                                        style={{ ...inputStyle, borderColor: formErrors[k] ? theme.colors.primary : theme.colors.border }}
+                                    />
+                                    {formErrors[k] && <span style={errorTextStyle}>{formErrors[k]}</span>}
                                 </div>
                             ))}
-                            <button type="submit" style={{ width: '100%', background: theme.colors.primary, color: '#fff', padding: '1rem', borderRadius: '12px', border: 'none', fontWeight: 700, cursor: 'pointer', marginTop: '1rem' }}>Continue</button>
+                            <button type="submit" style={{ width: '100%', background: theme.colors.primary, color: '#fff', padding: '1rem', borderRadius: '12px', border: 'none', fontWeight: 700, fontSize: '1rem', cursor: 'pointer', marginTop: '1rem' }}>Continue</button>
                         </form>
                     </motion.div>
                 )}
 
                 {mode === 'results2' && finalData && (
-                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass-card" style={{ padding: '3.5rem 2rem', border: `1px solid #22c55e` }}>
+                    <motion.div key="results2" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass-card" style={{ padding: '3.5rem 2rem', border: `1px solid #22c55e` }}>
                         <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>✅</div>
                         <h2 style={{ color: '#22c55e', marginBottom: '1rem' }}>Results Verified</h2>
                         <p style={{ color: theme.colors.text.secondary, marginBottom: '2rem' }}>{finalData.product?.name} — Scan #{finalData.scanCount}</p>

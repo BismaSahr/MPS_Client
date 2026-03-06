@@ -5,27 +5,37 @@ import theme from '../theme';
 
 const ContactPage = () => {
     const [form, setForm] = useState({ name: '', email: '', message: '' });
+    const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
 
-    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+    const handleChange = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+        // Clear error when user changes field
+        if (errors[e.target.name]) {
+            setErrors({ ...errors, [e.target.name]: null });
+        }
+    };
 
     const validate = () => {
-        if (!form.name.trim()) return "Full name is required.";
-        if (form.name.trim().length < 2) return "Name is too short.";
-        if (!form.email.trim()) return "Email is required.";
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(form.email)) return "Please enter a valid email address.";
-        if (!form.message.trim()) return "Message cannot be empty.";
-        if (form.message.trim().length < 10) return "Message should be at least 10 characters.";
-        return null;
+        const newErrors = {};
+        if (!form.name.trim()) newErrors.name = "Full name is required.";
+        else if (form.name.trim().length < 2) newErrors.name = "Name is too short.";
+
+        if (!form.email.trim()) newErrors.email = "Email is required.";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) newErrors.email = "Invalid email address.";
+
+        if (!form.message.trim()) newErrors.message = "Message cannot be empty.";
+        else if (form.message.trim().length < 10) newErrors.message = "Message should be at least 10 characters.";
+
+        return newErrors;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const error = validate();
-        if (error) {
-            toast.error(error);
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            toast.error("Please fix the errors in the form.");
             return;
         }
 
@@ -33,13 +43,12 @@ const ContactPage = () => {
         const loadToast = toast.loading("Sending your message...");
 
         try {
-            // Simulate API call - replace with real one if available
             await new Promise(resolve => setTimeout(resolve, 1500));
-
             toast.success("Message sent! We'll get back to you soon.", { id: loadToast });
             setForm({ name: '', email: '', message: '' });
+            setErrors({});
         } catch (err) {
-            toast.error("Failed to send message. Please try again.", { id: loadToast });
+            toast.error("Failed to send message.", { id: loadToast });
         } finally {
             setLoading(false);
         }
@@ -51,6 +60,10 @@ const ContactPage = () => {
         border: `1px solid ${theme.colors.border}`, fontFamily: theme.fonts.main,
         fontSize: '1rem', outline: 'none', boxSizing: 'border-box', marginTop: '0.5rem',
         transition: theme.transitions.standard
+    };
+
+    const errorTextStyle = {
+        color: theme.colors.primary, fontSize: '0.8rem', marginTop: '0.5rem', marginLeft: '0.5rem', display: 'block'
     };
 
     return (
@@ -84,18 +97,21 @@ const ContactPage = () => {
                     <form className="glass-card" style={{ padding: '3rem' }} onSubmit={handleSubmit} noValidate>
                         <div style={{ marginBottom: '1.5rem' }}>
                             <label style={{ color: theme.colors.text.secondary, fontSize: '0.9rem' }}>Name</label>
-                            <input name="name" value={form.name} onChange={handleChange} style={inputStyle} placeholder="Your Name"
-                                onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = theme.colors.border} />
+                            <input name="name" value={form.name} onChange={handleChange} style={{ ...inputStyle, borderColor: errors.name ? theme.colors.primary : theme.colors.border }} placeholder="Your Name"
+                                onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = errors.name ? theme.colors.primary : theme.colors.border} />
+                            {errors.name && <span style={errorTextStyle}>{errors.name}</span>}
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
                             <label style={{ color: theme.colors.text.secondary, fontSize: '0.9rem' }}>Email</label>
-                            <input name="email" type="email" value={form.email} onChange={handleChange} style={inputStyle} placeholder="your@email.com"
-                                onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = theme.colors.border} />
+                            <input name="email" type="email" value={form.email} onChange={handleChange} style={{ ...inputStyle, borderColor: errors.email ? theme.colors.primary : theme.colors.border }} placeholder="your@email.com"
+                                onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = errors.email ? theme.colors.primary : theme.colors.border} />
+                            {errors.email && <span style={errorTextStyle}>{errors.email}</span>}
                         </div>
                         <div style={{ marginBottom: '2rem' }}>
                             <label style={{ color: theme.colors.text.secondary, fontSize: '0.9rem' }}>Message</label>
-                            <textarea name="message" rows={5} value={form.message} onChange={handleChange} style={{ ...inputStyle, resize: 'vertical' }} placeholder="Your message..."
-                                onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = theme.colors.border} />
+                            <textarea name="message" rows={5} value={form.message} onChange={handleChange} style={{ ...inputStyle, resize: 'vertical', borderColor: errors.message ? theme.colors.primary : theme.colors.border }} placeholder="Your message..."
+                                onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = errors.message ? theme.colors.primary : theme.colors.border} />
+                            {errors.message && <span style={errorTextStyle}>{errors.message}</span>}
                         </div>
                         <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading}
                             style={{
