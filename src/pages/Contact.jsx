@@ -1,16 +1,48 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 import theme from '../theme';
 
 const ContactPage = () => {
     const [form, setForm] = useState({ name: '', email: '', message: '' });
-    const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-    const handleSubmit = (e) => {
+    const validate = () => {
+        if (!form.name.trim()) return "Full name is required.";
+        if (form.name.trim().length < 2) return "Name is too short.";
+        if (!form.email.trim()) return "Email is required.";
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(form.email)) return "Please enter a valid email address.";
+        if (!form.message.trim()) return "Message cannot be empty.";
+        if (form.message.trim().length < 10) return "Message should be at least 10 characters.";
+        return null;
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
+
+        const error = validate();
+        if (error) {
+            toast.error(error);
+            return;
+        }
+
+        setLoading(true);
+        const loadToast = toast.loading("Sending your message...");
+
+        try {
+            // Simulate API call - replace with real one if available
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            toast.success("Message sent! We'll get back to you soon.", { id: loadToast });
+            setForm({ name: '', email: '', message: '' });
+        } catch (err) {
+            toast.error("Failed to send message. Please try again.", { id: loadToast });
+        } finally {
+            setLoading(false);
+        }
     };
 
     const inputStyle = {
@@ -49,35 +81,31 @@ const ContactPage = () => {
 
                 {/* Form */}
                 <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
-                    {!submitted ? (
-                        <form className="glass-card" style={{ padding: '3rem' }} onSubmit={handleSubmit}>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{ color: theme.colors.text.secondary, fontSize: '0.9rem' }}>Name</label>
-                                <input name="name" required value={form.name} onChange={handleChange} style={inputStyle} placeholder="Your Name"
-                                    onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = theme.colors.border} />
-                            </div>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{ color: theme.colors.text.secondary, fontSize: '0.9rem' }}>Email</label>
-                                <input name="email" type="email" required value={form.email} onChange={handleChange} style={inputStyle} placeholder="your@email.com"
-                                    onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = theme.colors.border} />
-                            </div>
-                            <div style={{ marginBottom: '2rem' }}>
-                                <label style={{ color: theme.colors.text.secondary, fontSize: '0.9rem' }}>Message</label>
-                                <textarea name="message" required rows={5} value={form.message} onChange={handleChange} style={{ ...inputStyle, resize: 'vertical' }} placeholder="Your message..."
-                                    onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = theme.colors.border} />
-                            </div>
-                            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit"
-                                style={{ width: '100%', background: theme.colors.primary, color: '#fff', padding: '1rem', borderRadius: '12px', border: 'none', fontFamily: theme.fonts.main, fontWeight: 700, fontSize: '1rem', cursor: 'pointer' }}>
-                                Send Message
-                            </motion.button>
-                        </form>
-                    ) : (
-                        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass-card" style={{ padding: '4rem', textAlign: 'center' }}>
-                            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
-                            <h2>Message Sent!</h2>
-                            <p style={{ color: theme.colors.text.secondary, marginTop: '1rem' }}>We'll get back to you within 24 hours.</p>
-                        </motion.div>
-                    )}
+                    <form className="glass-card" style={{ padding: '3rem' }} onSubmit={handleSubmit} noValidate>
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <label style={{ color: theme.colors.text.secondary, fontSize: '0.9rem' }}>Name</label>
+                            <input name="name" value={form.name} onChange={handleChange} style={inputStyle} placeholder="Your Name"
+                                onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = theme.colors.border} />
+                        </div>
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <label style={{ color: theme.colors.text.secondary, fontSize: '0.9rem' }}>Email</label>
+                            <input name="email" type="email" value={form.email} onChange={handleChange} style={inputStyle} placeholder="your@email.com"
+                                onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = theme.colors.border} />
+                        </div>
+                        <div style={{ marginBottom: '2rem' }}>
+                            <label style={{ color: theme.colors.text.secondary, fontSize: '0.9rem' }}>Message</label>
+                            <textarea name="message" rows={5} value={form.message} onChange={handleChange} style={{ ...inputStyle, resize: 'vertical' }} placeholder="Your message..."
+                                onFocus={e => e.target.style.borderColor = theme.colors.primary} onBlur={e => e.target.style.borderColor = theme.colors.border} />
+                        </div>
+                        <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading}
+                            style={{
+                                width: '100%', background: theme.colors.primary, color: '#fff', padding: '1rem',
+                                borderRadius: '12px', border: 'none', fontFamily: theme.fonts.main, fontWeight: 700,
+                                fontSize: '1rem', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1
+                            }}>
+                            {loading ? 'Sending...' : 'Send Message'}
+                        </motion.button>
+                    </form>
                 </motion.div>
             </div>
         </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getCOAs } from '../services/coas';
 import theme from '../theme';
+import toast from 'react-hot-toast';
 
 const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
@@ -13,7 +14,11 @@ const COAPage = () => {
     useEffect(() => {
         getCOAs()
             .then(setCoas)
-            .catch(() => setError('Could not load COA records.'))
+            .catch(() => {
+                const msg = 'Could not load COA records.';
+                setError(msg);
+                toast.error(msg);
+            })
             .finally(() => setLoading(false));
     }, []);
 
@@ -63,17 +68,6 @@ const COAPage = () => {
                                 </span>
                             </div>
                         </div>
-
-                        {/* <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
-                            <div className="glass-card" style={{ padding: '1rem', textAlign: 'center' }}>
-                                <p style={{ color: theme.colors.text.secondary, fontSize: '0.75rem', marginBottom: '0.25rem' }}>PURITY</p>
-                                <p style={{ color: '#22c55e', fontWeight: 800, fontSize: '1.4rem' }}>{coa.purity || '—'}</p>
-                            </div>
-                            <div className="glass-card" style={{ padding: '1rem', textAlign: 'center' }}>
-                                <p style={{ color: theme.colors.text.secondary, fontSize: '0.75rem', marginBottom: '0.25rem' }}>LAB</p>
-                                <p style={{ fontWeight: 600, fontSize: '0.9rem' }}>{coa.labName || '—'}</p>
-                            </div>
-                        </div> */}
 
                         {coa.fileUrl && (
                             <div style={{ marginBottom: '1.5rem', borderRadius: '10px', overflow: 'hidden', border: `1px solid ${theme.colors.border}`, height: '180px' }}>

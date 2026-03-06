@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getProduct } from '../services/products';
 import theme from '../theme';
+import toast from 'react-hot-toast';
 
 const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
@@ -17,7 +18,11 @@ const ProductDetailPage = () => {
     useEffect(() => {
         getProduct(id)
             .then(setProduct)
-            .catch(() => setError('Product not found or server unavailable.'))
+            .catch(() => {
+                const msg = 'Product not found or server unavailable.';
+                setError(msg);
+                toast.error(msg);
+            })
             .finally(() => setLoading(false));
     }, [id]);
 
@@ -85,7 +90,10 @@ const ProductDetailPage = () => {
 
                 {/* Info */}
                 <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}>
-                    <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1.5rem' }}>{product.name}</h1>
+                    <span style={{ background: theme.colors.primary, color: '#fff', borderRadius: '6px', padding: '0.2rem 0.8rem', fontSize: '0.75rem', fontWeight: 700 }}>
+                        {product.categoryId?.name || 'Uncategorized'}
+                    </span>
+                    <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '1rem 0' }}>{product.name}</h1>
 
                     {product.description && (
                         <div style={{ marginBottom: '2rem' }}>
