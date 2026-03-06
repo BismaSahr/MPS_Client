@@ -44,12 +44,13 @@ const Footer = () => {
                     <h4 style={{ marginBottom: '1rem', color: theme.colors.text.primary }}>Contact</h4>
                     <p style={{ color: theme.colors.text.secondary, fontSize: '0.9rem', lineHeight: 1.7 }}>111 NE 1st Street<br />Miami, FL 33132, USA</p>
                     <a href="mailto:info@miamiproscience.com" style={{ color: theme.colors.secondary, textDecoration: 'none', display: 'block', marginTop: '0.75rem', fontSize: '0.9rem' }}>info@miamiproscience.com</a>
-                    <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                        {['Instagram', 'Facebook'].map(soc => (
-                            <span key={soc} style={{ color: theme.colors.text.secondary, cursor: 'pointer', fontSize: '0.85rem', transition: theme.transitions.standard }}>
-                                {soc}
-                            </span>
-                        ))}
+                    <div style={{ display: 'flex', gap: '1.25rem', marginTop: '1.25rem' }}>
+                        <a href="https://www.instagram.com/miamiproscience" target="_blank" rel="noreferrer" style={{ color: theme.colors.text.secondary, transition: theme.transitions.standard }} onMouseEnter={e => e.currentTarget.style.color = theme.colors.primary} onMouseLeave={e => e.currentTarget.style.color = theme.colors.text.secondary}>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        </a>
+                        <a href="https://www.facebook.com/miamiproscience" target="_blank" rel="noreferrer" style={{ color: theme.colors.text.secondary, transition: theme.transitions.standard }} onMouseEnter={e => e.currentTarget.style.color = theme.colors.primary} onMouseLeave={e => e.currentTarget.style.color = theme.colors.text.secondary}>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                        </a>
                     </div>
                 </div>
             </div>

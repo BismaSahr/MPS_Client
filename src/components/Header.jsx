@@ -44,6 +44,8 @@ const Header = () => {
                         {link.name}
                     </Link>
                 ))}
+
+
                 <Link to="/verify" style={{
                     background: theme.colors.primary, color: '#fff', padding: '0.55rem 1.5rem',
                     borderRadius: '50px', fontWeight: 700, textDecoration: 'none', fontSize: '0.9rem',
