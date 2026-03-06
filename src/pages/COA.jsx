@@ -2,10 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getCOAs } from '../services/coas';
 import theme from '../theme';
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { getCOAs } from '../services/coas';
-import theme from '../theme';
 
 const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
