@@ -53,6 +53,7 @@ const VerifyPage = () => {
     const handleScanSuccess = async (decodedText) => {
         stopScannerQuiet();
         setMode('verifying');
+        setError(null);
         try {
             const data = await scanQRCode(decodedText.trim());
             setResult(data);
@@ -60,19 +61,22 @@ const VerifyPage = () => {
         } catch (err) {
             const msg = err?.response?.data?.message || 'QR code not recognised.';
             setError(msg);
-            setMode('idle');
+            setMode('error');
         }
     };
 
     const handleScanSuccess2 = async (decodedText) => {
         stopScannerQuiet();
         setMode('verifying2');
+        setError(null);
         try {
             const data = await scanQRCode(decodedText.trim());
             setResult2(data);
             setMode('results2');
         } catch (err) {
-            setMode('scan2');
+            const msg = err?.response?.data?.message || 'Scan failed. Try again.';
+            setError(msg);
+            setMode('error');
         }
     };
 
@@ -185,6 +189,15 @@ const VerifyPage = () => {
             )}
 
             <AnimatePresence>
+                {mode === 'error' && (
+                    <motion.div key="error" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass-card" style={{ padding: '4rem 2rem', border: `1px solid ${theme.colors.primary}` }}>
+                        <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>❌</div>
+                        <h2 style={{ color: theme.colors.primary, marginBottom: '0.75rem' }}>Scan Error</h2>
+                        <p style={{ color: theme.colors.text.secondary, marginBottom: '2.5rem' }}>{error}</p>
+                        <button onClick={reset} style={{ background: theme.colors.primary, color: '#fff', padding: '1rem 3rem', borderRadius: '50px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>Try Again</button>
+                    </motion.div>
+                )}
+
                 {mode === 'result' && result && (
                     <motion.div key="result" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass-card" style={{ padding: '3.5rem 2rem', border: `1px solid ${resStatus.color}` }}>
                         <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>{resStatus.icon}</div>
@@ -201,7 +214,9 @@ const VerifyPage = () => {
                         )}
 
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                            <button onClick={() => setMode('form')} style={{ background: theme.colors.secondary, color: '#fff', padding: '0.8rem 2rem', borderRadius: '50px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>View Full Results</button>
+                            {result.status !== 'invalid' && (
+                                <button onClick={() => setMode('form')} style={{ background: theme.colors.secondary, color: '#fff', padding: '0.8rem 2rem', borderRadius: '50px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>View Full Results</button>
+                            )}
                             <button onClick={reset} style={{ background: 'transparent', color: theme.colors.text.primary, border: `1px solid ${theme.colors.border}`, padding: '0.8rem 2rem', borderRadius: '50px', cursor: 'pointer' }}>Cancel</button>
                         </div>
                     </motion.div>
