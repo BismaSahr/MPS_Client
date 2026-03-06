@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import toast from 'react-hot-toast';
 import theme from '../theme';
 
 const ContactPage = () => {
@@ -35,20 +34,17 @@ const ContactPage = () => {
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
-            toast.error("Please fix the errors in the form.");
             return;
         }
 
         setLoading(true);
-        const loadToast = toast.loading("Sending your message...");
 
         try {
             await new Promise(resolve => setTimeout(resolve, 1500));
-            toast.success("Message sent! We'll get back to you soon.", { id: loadToast });
             setForm({ name: '', email: '', message: '' });
             setErrors({});
         } catch (err) {
-            toast.error("Failed to send message.", { id: loadToast });
+            console.error("Failed to send message:", err);
         } finally {
             setLoading(false);
         }

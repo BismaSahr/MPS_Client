@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getProduct } from '../services/products';
 import theme from '../theme';
-import toast from 'react-hot-toast';
 
 const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
@@ -21,7 +20,6 @@ const ProductDetailPage = () => {
             .catch(() => {
                 const msg = 'Product not found or server unavailable.';
                 setError(msg);
-                toast.error(msg);
             })
             .finally(() => setLoading(false));
     }, [id]);

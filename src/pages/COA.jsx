@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getCOAs } from '../services/coas';
 import theme from '../theme';
-import toast from 'react-hot-toast';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { getCOAs } from '../services/coas';
+import theme from '../theme';
 
 const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
@@ -17,7 +20,6 @@ const COAPage = () => {
             .catch(() => {
                 const msg = 'Could not load COA records.';
                 setError(msg);
-                toast.error(msg);
             })
             .finally(() => setLoading(false));
     }, []);

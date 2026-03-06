@@ -4,7 +4,6 @@ import theme from '../theme';
 import { getProducts } from '../services/products';
 import { getCategories } from '../services/categories';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 
 const ProductsPage = () => {
     const [products, setProducts] = useState([]);
@@ -26,7 +25,6 @@ const ProductsPage = () => {
                 setCategories([{ _id: 'all', name: 'All' }, ...categoriesData]);
             } catch (error) {
                 console.error("Error fetching data:", error);
-                toast.error("Failed to load products. Please check your connection.");
             } finally {
                 setLoading(false);
             }

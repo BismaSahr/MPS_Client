@@ -33,20 +33,10 @@ function AnimatedRoutes() {
   );
 }
 
-import { Toaster } from 'react-hot-toast';
-
 function App() {
   return (
     <Router>
       <div style={{ position: 'relative' }}>
-        <Toaster position="top-right" toastOptions={{
-          style: {
-            background: '#1A1A1A',
-            color: '#fff',
-            border: '1px solid rgba(255,27,33,0.2)',
-            fontFamily: 'Inter, sans-serif'
-          }
-        }} />
         <div className="gradient-bg"></div>
         <div className="glow-mesh"></div>
         <AnimatedRoutes />

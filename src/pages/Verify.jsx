@@ -4,7 +4,6 @@ import { Html5Qrcode } from 'html5-qrcode';
 import { scanQRCode } from '../services/qrcodes';
 import { createCustomer } from '../services/customers';
 import theme from '../theme';
-import toast from 'react-hot-toast';
 
 const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 const SCANNER_ID = 'mps-qr-scanner';
@@ -58,11 +57,9 @@ const VerifyPage = () => {
             const data = await scanQRCode(decodedText.trim());
             setResult(data);
             setMode('result');
-            toast.success("Product verified!");
         } catch (err) {
             const msg = err?.response?.data?.message || 'QR code not recognised.';
             setError(msg);
-            toast.error(msg);
             setMode('idle');
         }
     };
@@ -74,9 +71,7 @@ const VerifyPage = () => {
             const data = await scanQRCode(decodedText.trim());
             setResult2(data);
             setMode('results2');
-            toast.success("Results unlocked!");
         } catch (err) {
-            toast.error("Scan failed. Try again.");
             setMode('scan2');
         }
     };
@@ -91,7 +86,6 @@ const VerifyPage = () => {
                 mode === 'scanning' ? handleScanSuccess : handleScanSuccess2,
                 () => { }
             ).catch(() => {
-                toast.error("Camera access denied.");
                 setMode('idle');
                 scannerRef.current = null;
             });
@@ -115,18 +109,15 @@ const VerifyPage = () => {
         const errs = validateForm();
         if (Object.keys(errs).length > 0) {
             setFormErrors(errs);
-            toast.error("Please fill all required fields.");
             return;
         }
 
-        const loadToast = toast.loading("Saving details...");
         try {
             await createCustomer(form);
-            toast.success("Saved! Scan again for full data.", { id: loadToast });
             setFormErrors({});
             setMode('scan2');
         } catch (_) {
-            toast.error("Error saving data.", { id: loadToast });
+            // Error handled by showing nothing for now as per user request to remove toast
         }
     };
 
