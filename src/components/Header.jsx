@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import theme from '../theme';
-
+import logo from '../assets/logo.png';
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
@@ -33,7 +33,7 @@ const Header = () => {
             display: 'flex', justifyContent: 'space-between', alignItems: 'center'
         }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-                <img src="/src/assets/logo.png" alt="Miami Pro Science" style={{ height: '40px', objectFit: 'contain' }} />
+                <img src={logo} alt="Miami Pro Science" style={{ height: '40px', objectFit: 'contain' }} />
             </Link>
 
             {/* Desktop Navigation */}
