@@ -91,11 +91,21 @@ const Header = () => {
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
                             style={{
                                 position: 'fixed', right: 0, top: 0, bottom: 0, width: '280px',
-                                background: theme.colors.background.surface, zIndex: 1000,
-                                padding: '2rem', display: 'flex', flexDirection: 'column'
+                                background: 'rgba(20, 20, 24, 0.98)',
+                                backdropFilter: 'blur(20px)',
+                                borderLeft: `1px solid ${theme.colors.border}`,
+                                zIndex: 1000,
+                                padding: '2rem', display: 'flex', flexDirection: 'column',
+                                boxShadow: '-10px 0 30px rgba(0,0,0,0.5)'
                             }}
                         >
-                            <div style={{ marginBottom: '3rem', textAlign: 'right', fontSize: '1.5rem', cursor: 'pointer' }} onClick={() => setIsOpen(false)}>✕</div>
+                            <div style={{
+                                marginBottom: '3rem',
+                                textAlign: 'right',
+                                fontSize: '1.5rem',
+                                cursor: 'pointer',
+                                color: theme.colors.text.primary
+                            }} onClick={() => setIsOpen(false)}>✕</div>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '3rem' }}>
                                 {navLinks.map((link) => (
