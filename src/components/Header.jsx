@@ -78,7 +78,7 @@ const Header = () => {
             </div>
 
             {/* Mobile Sidebar */}
-            <AnimatePresence>
+            <AnimatePresence style={{ background: 'rgba(0,0,0,0.5)' }}>
                 {isOpen && (
                     <>
                         <motion.div
