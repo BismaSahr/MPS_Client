@@ -1,4 +1,6 @@
-import labRender from '../assets/lab_render.png';
+import React from 'react';
+import { motion } from 'framer-motion';
+import theme from '../theme';
 
 const AboutPage = () => {
     return (
@@ -24,28 +26,24 @@ const AboutPage = () => {
                     initial={{ opacity: 0, x: -50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="glass-card about-image-container"
+                    className="glass-card about-placeholder-container"
                     style={{
-                        padding: '1rem',
+                        padding: '3rem',
                         height: '400px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        overflow: 'hidden',
-                        borderRadius: '20px'
+                        fontSize: '2.5rem',
+                        textAlign: 'center',
+                        color: theme.colors.primary,
+                        border: `1px solid ${theme.colors.border}`,
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        backdropFilter: 'blur(10px)',
+                        borderRadius: '20px',
+                        boxShadow: `0 0 20px ${theme.colors.primary}22`
                     }}
                 >
-                    <img
-                        src={labRender}
-                        alt="Advanced Laboratory Render"
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            borderRadius: '12px',
-                            boxShadow: `0 0 30px ${theme.colors.primary}33`
-                        }}
-                    />
+                    [ 🧬 Lab Render Placeholder ]
                 </motion.div>
 
                 <motion.div
@@ -106,7 +104,7 @@ const AboutPage = () => {
                     .about-hero { padding: 4rem 0 2rem !important; }
                     .about-title { font-size: 2.5rem !important; }
                     .about-subtitle { font-size: 1rem !important; }
-                    .about-image-container { height: 300px !important; }
+                    .about-placeholder-container { height: 300px !important; font-size: 1.8rem !important; }
                     .timeline-line { left: 20px !important; transform: none !important; }
                     .timeline-wrapper { margin-left: 20px !important; }
                     .timeline-item { justify-content: flex-start !important; text-align: left !important; padding: 1.5rem 0 !important; }
@@ -114,7 +112,7 @@ const AboutPage = () => {
                 }
                 @media (max-width: 480px) {
                     .about-title { font-size: 2rem !important; }
-                    .about-image-container { height: 220px !important; }
+                    .about-placeholder-container { height: 220px !important; font-size: 1.4rem !important; }
                     .about-text h2 { font-size: 1.75rem !important; }
                     .timeline-content h3 { font-size: 1.25rem !important; }
                     .timeline-content h4 { font-size: 1.1rem !important; }
