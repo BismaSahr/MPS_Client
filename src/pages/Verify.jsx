@@ -5,7 +5,7 @@ import { scanQRCode } from '../services/qrcodes';
 import { createCustomer } from '../services/customers';
 import theme from '../theme';
 
-const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://pv-backend-1zb3.onrender.com';
 const SCANNER_ID = 'mps-qr-scanner';
 
 const statusConfig = {

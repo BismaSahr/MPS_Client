@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { getProduct } from '../services/products';
 import theme from '../theme';
 
-const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+const BACKEND_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://pv-backend-1zb3.onrender.com';
 
 const ProductDetailPage = () => {
     const { id } = useParams();
