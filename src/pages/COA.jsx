@@ -21,8 +21,12 @@ const COAPage = () => {
     }, []);
 
     return (
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '6rem 2rem' }}>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '1rem' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '6rem 2rem' }} className="coa-container">
+            <motion.h1
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '1rem' }}
+                className="coa-title"
+            >
                 Certificates of <span style={{ color: theme.colors.primary }}>Analysis</span>
             </motion.h1>
             <p style={{ textAlign: 'center', color: theme.colors.text.secondary, marginBottom: '4rem' }}>
@@ -45,7 +49,7 @@ const COAPage = () => {
                 <div style={{ textAlign: 'center', padding: '4rem', color: theme.colors.text.secondary }}>No COA records found.</div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
+            <div className="coa-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
                 {coas.map((coa, i) => (
                     <motion.div
                         key={coa._id}
@@ -60,7 +64,7 @@ const COAPage = () => {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
                             <div style={{ fontSize: '2.5rem' }}>📄</div>
                             <div>
-                                <h3>{coa.batchId?.productId?.name || 'Product'}</h3>
+                                <h3 style={{ fontSize: '1.1rem' }}>{coa.batchId?.productId?.name || 'Product'}</h3>
                                 <span style={{ color: theme.colors.text.secondary, fontSize: '0.85rem' }}>
                                     {coa.batchId?.batchNumber || 'N/A'}
                                 </span>
@@ -93,6 +97,14 @@ const COAPage = () => {
                     </motion.div>
                 ))}
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    .coa-container { padding: 4rem 1.5rem !important; }
+                    .coa-title { font-size: 2.2rem !important; }
+                    .coa-grid { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };

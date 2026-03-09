@@ -63,26 +63,30 @@ const ContactPage = () => {
     };
 
     return (
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '6rem 2rem' }}>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '1rem' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '6rem 2rem' }} className="contact-container">
+            <motion.h1
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '1rem' }}
+                className="contact-title"
+            >
                 Get in <span style={{ color: theme.colors.primary }}>Touch</span>
             </motion.h1>
             <p style={{ textAlign: 'center', color: theme.colors.text.secondary, marginBottom: '4rem' }}>
                 Our team is here to answer your research questions.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem', alignItems: 'start' }}>
+            <div className="contact-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem', alignItems: 'start' }}>
                 {/* Info */}
                 <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-                    <div className="glass-card" style={{ padding: '2.5rem', marginBottom: '2rem' }}>
+                    <div className="glass-card info-card" style={{ padding: '2.5rem', marginBottom: '2rem' }}>
                         <h3 style={{ marginBottom: '1rem' }}>📍 Address</h3>
                         <p style={{ color: theme.colors.text.secondary }}>111 NE 1st Street, Miami, FL 33132, USA</p>
                     </div>
-                    <div className="glass-card" style={{ padding: '2.5rem', marginBottom: '2rem' }}>
+                    <div className="glass-card info-card" style={{ padding: '2.5rem', marginBottom: '2rem' }}>
                         <h3 style={{ marginBottom: '1rem' }}>✉️ Email</h3>
                         <a href="mailto:info@miamiproscience.com" style={{ color: theme.colors.secondary }}>info@miamiproscience.com</a>
                     </div>
-                    <div className="glass-card" style={{ padding: '2.5rem' }}>
+                    <div className="glass-card info-card" style={{ padding: '2.5rem' }}>
                         <h3 style={{ marginBottom: '1rem' }}>🌐 Web</h3>
                         <a href="https://miamiproscience.com" target="_blank" rel="noreferrer" style={{ color: theme.colors.secondary }}>miamiproscience.com</a>
                     </div>
@@ -90,7 +94,7 @@ const ContactPage = () => {
 
                 {/* Form */}
                 <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
-                    <form className="glass-card" style={{ padding: '3rem' }} onSubmit={handleSubmit} noValidate>
+                    <form className="glass-card contact-form" style={{ padding: '3rem' }} onSubmit={handleSubmit} noValidate>
                         <div style={{ marginBottom: '1.5rem' }}>
                             <label style={{ color: theme.colors.text.secondary, fontSize: '0.9rem' }}>Name</label>
                             <input name="name" value={form.name} onChange={handleChange} style={{ ...inputStyle, borderColor: errors.name ? theme.colors.primary : theme.colors.border }} placeholder="Your Name"
@@ -120,6 +124,16 @@ const ContactPage = () => {
                     </form>
                 </motion.div>
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    .contact-container { padding: 4rem 1.5rem !important; }
+                    .contact-title { font-size: 2.2rem !important; }
+                    .contact-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+                    .contact-form { padding: 2rem !important; }
+                    .info-card { padding: 1.5rem !important; }
+                }
+            `}</style>
         </div>
     );
 };

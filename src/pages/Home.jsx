@@ -22,12 +22,13 @@ const HomePage = () => {
     return (
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 2rem' }}>
             {/* Hero */}
-            <section style={{ textAlign: 'center', padding: '4rem 0 5rem' }}>
+            <section style={{ textAlign: 'center', padding: '4rem 0 5rem' }} className="hero-section">
                 <motion.h1
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7 }}
                     style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.2rem', letterSpacing: '-2px' }}
+                    className="hero-title"
                 >
                     Pioneering the Future of <span className="text-gradient">Research</span>
                 </motion.h1>
@@ -72,7 +73,7 @@ const HomePage = () => {
                     <div style={{ textAlign: 'center', padding: '4rem', color: theme.colors.text.secondary }}>No products found.</div>
                 )}
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
+                <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
                     {products.map((product, i) => {
                         const imgSrc = product.images?.[0]
                             ? `${BACKEND_BASE}${product.images[0]}`
@@ -123,7 +124,7 @@ const HomePage = () => {
 
             {/* QR Callout */}
             <section style={{ marginTop: '6rem' }}>
-                <div className="glass-card" style={{ padding: '4rem', textAlign: 'center', background: `linear-gradient(135deg, ${theme.colors.background.surface}, #1a1a2e)` }}>
+                <div className="glass-card callout-container" style={{ padding: '4rem', textAlign: 'center', background: `linear-gradient(135deg, ${theme.colors.background.surface}, #1a1a2e)` }}>
                     <h2 style={{ marginBottom: '1rem' }}>Authenticity is Our Priority</h2>
                     <p style={{ color: theme.colors.text.secondary, maxWidth: '640px', margin: '0 auto 2rem', lineHeight: 1.7 }}>
                         Every Miami Pro Science product comes with a unique QR code. Scan it to instantly verify authenticity and access full lab COA reports.
@@ -136,6 +137,15 @@ const HomePage = () => {
                     </button>
                 </div>
             </section>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    .hero-title { font-size: 2.5rem !important; }
+                    .hero-section { padding: 2rem 0 3rem !important; }
+                    .callout-container { padding: 2.5rem 1.5rem !important; }
+                    .product-grid { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };

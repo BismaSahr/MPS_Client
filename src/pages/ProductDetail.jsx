@@ -53,10 +53,10 @@ const ProductDetailPage = () => {
                 ← Back
             </button>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: '4rem', alignItems: 'start' }}>
+            <div className="detail-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: '4rem', alignItems: 'start' }}>
                 {/* Image Gallery */}
                 <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
-                    <div className="glass-card" style={{ overflow: 'hidden', padding: 0, marginBottom: '1rem', height: '380px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: theme.colors.background.surface }}>
+                    <div className="glass-card detail-image-container" style={{ overflow: 'hidden', padding: 0, marginBottom: '1rem', height: '380px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: theme.colors.background.surface }}>
                         {images[activeImg] ? (
                             <img
                                 src={`${BACKEND_BASE}${images[activeImg]}`}
@@ -91,7 +91,7 @@ const ProductDetailPage = () => {
                     <span style={{ background: theme.colors.primary, color: '#fff', borderRadius: '6px', padding: '0.2rem 0.8rem', fontSize: '0.75rem', fontWeight: 700 }}>
                         {product.categoryId?.name || 'Uncategorized'}
                     </span>
-                    <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '1rem 0' }}>{product.name}</h1>
+                    <h1 className="detail-title" style={{ fontSize: '2.5rem', fontWeight: 800, margin: '1rem 0' }}>{product.name}</h1>
 
                     {product.description && (
                         <div style={{ marginBottom: '2rem' }}>
@@ -100,7 +100,7 @@ const ProductDetailPage = () => {
                         </div>
                     )}
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2.5rem' }}>
+                    <div className="spec-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2.5rem' }}>
                         {product.storage && (
                             <div className="glass-card" style={{ padding: '1.25rem' }}>
                                 <p style={{ color: theme.colors.text.secondary, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.4rem' }}>Storage</p>
@@ -120,10 +120,17 @@ const ProductDetailPage = () => {
                             ⚠️ <strong style={{ color: theme.colors.text.primary }}>Research Use Only.</strong> Not for human consumption. For in vitro and laboratory research purposes only.
                         </p>
                     </div>
-
-
                 </motion.div>
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    .detail-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+                    .detail-image-container { height: 280px !important; }
+                    .detail-title { font-size: 2rem !important; }
+                    .spec-grid { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };

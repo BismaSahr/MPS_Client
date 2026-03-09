@@ -34,7 +34,11 @@ const ProductsPage = () => {
 
     return (
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 2rem' }}>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '0.5rem' }}>
+            <motion.h1
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '0.5rem' }}
+                className="page-title"
+            >
                 Research <span style={{ color: theme.colors.primary }}>Products</span>
             </motion.h1>
             <p style={{ textAlign: 'center', color: theme.colors.text.secondary, marginBottom: '3rem' }}>
@@ -42,7 +46,7 @@ const ProductsPage = () => {
             </p>
 
             {/* Filters */}
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '3rem', flexWrap: 'wrap' }}>
+            <div className="filter-container" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '3rem', flexWrap: 'wrap' }}>
                 {categories.map(cat => (
                     <button
                         key={cat._id}
@@ -64,7 +68,7 @@ const ProductsPage = () => {
                     Loading products...
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
+                <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
                     {products.map((p, i) => (
                         <motion.div
                             key={p._id}
@@ -93,6 +97,14 @@ const ProductsPage = () => {
                     ))}
                 </div>
             )}
+
+            <style>{`
+                @media (max-width: 768px) {
+                    .page-title { font-size: 2.2rem !important; }
+                    .filter-container { gap: 0.5rem !important; margin-bottom: 2rem !important; }
+                    .product-grid { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };

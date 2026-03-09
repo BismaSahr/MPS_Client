@@ -154,8 +154,12 @@ const VerifyPage = () => {
     const resStatus = result?.status ? (statusConfig[result.status] || statusConfig.invalid) : statusConfig.invalid;
 
     return (
-        <div style={{ maxWidth: '700px', margin: '0 auto', padding: '6rem 2rem', textAlign: 'center' }}>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ fontSize: '3rem', marginBottom: '1rem' }}>
+        <div style={{ maxWidth: '700px', margin: '0 auto', padding: '6rem 2rem', textAlign: 'center' }} className="verify-container">
+            <motion.h1
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                style={{ fontSize: '3rem', marginBottom: '1rem' }}
+                className="verify-title"
+            >
                 QR <span style={{ color: theme.colors.primary }}>Verification</span>
             </motion.h1>
             <p style={{ color: theme.colors.text.secondary, marginBottom: '3rem' }}>
@@ -164,7 +168,7 @@ const VerifyPage = () => {
 
             {mode === 'idle' && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card" style={{ padding: '4rem 2rem' }}>
-                    <div style={{ fontSize: '5rem', marginBottom: '1.5rem' }}>📷</div>
+                    <div style={{ fontSize: '5rem', marginBottom: '1.5rem' }} className="verify-icon">📷</div>
                     <h2>Point Camera at QR Code</h2>
                     <p style={{ color: theme.colors.text.secondary, marginBottom: '2.5rem' }}>Ensure the code is well-lit and in focus.</p>
                     <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={startScanner}
@@ -213,7 +217,7 @@ const VerifyPage = () => {
                             </div>
                         )}
 
-                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                             {result.status !== 'invalid' && (
                                 <button onClick={() => setMode('form')} style={{ background: theme.colors.secondary, color: '#fff', padding: '0.8rem 2rem', borderRadius: '50px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>View Full Results</button>
                             )}
@@ -248,7 +252,7 @@ const VerifyPage = () => {
                         <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>✅</div>
                         <h2 style={{ color: '#22c55e', marginBottom: '1rem' }}>Results Verified</h2>
                         <p style={{ color: theme.colors.text.secondary, marginBottom: '2rem' }}>{finalData.product?.name} — Scan #{finalData.scanCount}</p>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+                        <div className="res-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
                             {[{ l: 'Status', v: 'Genuine' }, { l: 'Scan #', v: finalData.scanCount }, { l: 'Purity', v: finalData.purity }, { l: 'Lab', v: finalData.labName }].map(i => (
                                 <div key={i.l} className="glass-card" style={{ padding: '1rem', textAlign: 'left' }}>
                                     <p style={{ fontSize: '0.7rem', color: theme.colors.text.secondary }}>{i.l}</p>
@@ -261,6 +265,18 @@ const VerifyPage = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    .verify-container { padding: 4rem 1.5rem !important; }
+                    .verify-title { font-size: 2.2rem !important; }
+                    .verify-icon { font-size: 3.5rem !important; }
+                    .res-grid { grid-template-columns: 1fr 1fr !important; }
+                }
+                @media (max-width: 480px) {
+                    .res-grid { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };
