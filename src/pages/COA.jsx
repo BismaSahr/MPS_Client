@@ -82,7 +82,7 @@ const COAPage = () => {
                         )} */}
 
                         <a
-                            href={coa.fileUrl ? `${BACKEND_BASE}${coa.fileUrl}` : '#'}
+                            href={coa.fileUrl ? `${coa.fileUrl}` : '#'}
                             target="_blank"
                             rel="noreferrer"
                             style={{
