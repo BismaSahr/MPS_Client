@@ -57,6 +57,7 @@ const VerifyPage = () => {
         try {
             const data = await scanQRCode(decodedText.trim());
             setResult(data);
+            console.log(data);
             setMode('result');
         } catch (err) {
             const msg = err?.response?.data?.message || 'QR code not recognised.';
@@ -148,9 +149,9 @@ const VerifyPage = () => {
 
     const isScanning = mode === 'scanning' || mode === 'scan2';
     const isVerifying = mode === 'verifying' || mode === 'verifying2';
-    const coaFileUrl = result?.coaFile ? `${BACKEND_BASE}${result.coaFile}` : null;
+    const coaFileUrl = result?.coaFile || null;
     const finalData = result2 || result;
-    const finalCoaUrl = finalData?.coaFile ? `${BACKEND_BASE}${finalData.coaFile}` : coaFileUrl;
+    const finalCoaUrl = finalData?.coaFile || coaFileUrl;
     const resStatus = result?.status ? (statusConfig[result.status] || statusConfig.invalid) : statusConfig.invalid;
 
     return (
@@ -212,7 +213,12 @@ const VerifyPage = () => {
                         {coaFileUrl && (
                             <div style={{ marginBottom: '2rem', borderRadius: '12px', overflow: 'hidden', border: `1px solid ${theme.colors.border}`, maxHeight: '300px' }}>
                                 {coaFileUrl.toLowerCase().endsWith('.pdf')
-                                    ? <iframe src={coaFileUrl} style={{ width: '100%', height: '300px', border: 'none' }} title="COA preview" />
+                                    ? <embed
+                                        src={coaFileUrl}
+                                        type="application/pdf"
+                                        width="100%"
+                                        height="300px"
+                                    />
                                     : <img src={coaFileUrl} alt="COA" style={{ width: '100%', maxHeight: '300px', objectFit: 'contain' }} />}
                             </div>
                         )}
