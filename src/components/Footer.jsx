@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import theme from '../theme';
+import logo from "../assets/logo.png";
 
 const Footer = () => {
     const policyLinks = [
@@ -29,7 +30,7 @@ const Footer = () => {
         }}>
             <div className="footer-grid" style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
                 <div className="footer-brand">
-                    <img src="/src/assets/logo.png" alt="Miami Pro Science" style={{ height: '48px', objectFit: 'contain', marginBottom: '1rem', display: 'block' }} className="footer-logo" />
+                    <img src={logo} alt="Miami Pro Science" style={{ height: '48px', objectFit: 'contain', marginBottom: '1rem', display: 'block' }} className="footer-logo" />
                     <p style={{ color: theme.colors.text.secondary, fontSize: '0.9rem', lineHeight: 1.7 }}>Pioneer in Research. Pharmaceutical-grade purity for the scientific community.</p>
                 </div>
                 <div className="footer-links">
