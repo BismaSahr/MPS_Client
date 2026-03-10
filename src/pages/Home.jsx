@@ -14,10 +14,15 @@ const HomePage = () => {
 
     useEffect(() => {
         getProducts()
-            .then(setProducts)
+            .then((data) => {
+                console.log(data);   // log the API response
+                setProducts(data);
+            })
             .catch(() => setError('Could not load products. Make sure the backend is running.'))
             .finally(() => setLoading(false));
     }, []);
+
+    console.log(products);
 
     return (
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 2rem' }}>
@@ -75,9 +80,7 @@ const HomePage = () => {
 
                 <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
                     {products.map((product, i) => {
-                        const imgSrc = product.images?.[0]
-                            ? `${BACKEND_BASE}${product.images[0]}`
-                            : null;
+                        const imgSrc = product.images?.[0] || null;
 
                         return (
                             <motion.div

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import theme from '../theme';
-
+import labrender from '../assets/image.png';
 const AboutPage = () => {
     return (
         <div className="landing-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
@@ -26,24 +26,32 @@ const AboutPage = () => {
                     initial={{ opacity: 0, x: -50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="glass-card about-placeholder-container"
+                    className="glass-card about-image-container"
                     style={{
-                        padding: '3rem',
-                        height: '400px',
+                        height: '320px',
+                        width: '100%',
+                        maxWidth: '420px',
+                        margin: '0 auto',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '2.5rem',
-                        textAlign: 'center',
-                        color: theme.colors.primary,
                         border: `1px solid ${theme.colors.border}`,
-                        background: 'rgba(255, 255, 255, 0.03)',
+                        background: 'rgba(255,255,255,0.03)',
                         backdropFilter: 'blur(10px)',
                         borderRadius: '20px',
-                        boxShadow: `0 0 20px ${theme.colors.primary}22`
+                        overflow: 'hidden',
+                        boxShadow: `0 10px 30px rgba(0,0,0,0.25)`
                     }}
                 >
-                    [ 🧬 Lab Render Placeholder ]
+                    <img
+                        src={labrender}
+                        alt="Lab Render"
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                        }}
+                    />
                 </motion.div>
 
                 <motion.div
@@ -104,8 +112,24 @@ const AboutPage = () => {
                     .about-hero { padding: 4rem 0 2rem !important; }
                     .about-title { font-size: 2.5rem !important; }
                     .about-subtitle { font-size: 1rem !important; }
-                    .about-placeholder-container { height: 300px !important; font-size: 1.8rem !important; }
-                    .timeline-line { left: 20px !important; transform: none !important; }
+                    .about-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .about-image-container {
+        height: 260px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-image-container {
+        height: 220px !important;
+    }
+}
+                     .timeline-line { left: 20px !important; transform: none !important; }
                     .timeline-wrapper { margin-left: 20px !important; }
                     .timeline-item { justify-content: flex-start !important; text-align: left !important; padding: 1.5rem 0 !important; }
                     .timeline-content { width: 90% !important; padding: 0 0 0 2.5rem !important; }

@@ -59,7 +59,7 @@ const ProductDetailPage = () => {
                     <div className="glass-card detail-image-container" style={{ overflow: 'hidden', padding: 0, marginBottom: '1rem', height: '380px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: theme.colors.background.surface }}>
                         {images[activeImg] ? (
                             <img
-                                src={`${BACKEND_BASE}${images[activeImg]}`}
+                                src={images[activeImg]}
                                 alt={product.name}
                                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                             />
@@ -79,8 +79,11 @@ const ProductDetailPage = () => {
                                         transition: theme.transitions.standard
                                     }}
                                 >
-                                    <img src={`${BACKEND_BASE}${img}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                </div>
+                                    <img
+                                        src={images[activeImg]}
+                                        alt={product.name}
+                                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                    />    </div>
                             ))}
                         </div>
                     )}

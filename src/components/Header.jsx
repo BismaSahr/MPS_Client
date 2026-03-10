@@ -72,6 +72,8 @@ const Header = () => {
                             key={link.name}
                             to={link.path}
                             style={{
+                                marginTop: "0.5rem", ecoration: "none",
+
                                 textDecoration: "none",
                                 fontWeight: 600,
                                 color: isActive(link.path)
