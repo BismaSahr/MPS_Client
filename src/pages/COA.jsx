@@ -71,7 +71,7 @@ const COAPage = () => {
                             </div>
                         </div>
 
-                        {coa.fileUrl && (
+                        {/* {coa.fileUrl && (
                             <div style={{ marginBottom: '1.5rem', borderRadius: '10px', overflow: 'hidden', border: `1px solid ${theme.colors.border}`, height: '180px' }}>
                                 {coa.fileUrl.toLowerCase().endsWith('.pdf') ? (
                                     <iframe src={`${BACKEND_BASE}${coa.fileUrl}`} style={{ width: '100%', height: '100%', border: 'none' }} title="COA" />
@@ -79,7 +79,7 @@ const COAPage = () => {
                                     <img src={`${BACKEND_BASE}${coa.fileUrl}`} alt="COA" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 )}
                             </div>
-                        )}
+                        )} */}
 
                         <a
                             href={coa.fileUrl ? `${BACKEND_BASE}${coa.fileUrl}` : '#'}
